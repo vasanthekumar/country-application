@@ -7,6 +7,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -23,17 +25,23 @@ public class CountryService {
     @Autowired
     Client client;
 
+    @Autowired
+    LoadBalancerClient loadBalancerClient;
+
     public List<Country> getCountry(){
         return countryRepository.findAll();
     }
 
     @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
     public String getCountryInfoByName(String countryName){
-        Mono<String> response = client.webClient().get().uri("/country/into/{name}",countryName).retrieve().bodyToMono(String.class);
+        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
+        String uri = serviceInstance.getUri().toString();
+        Mono<String> response = client.webClient().get().uri(uri+"/country/into/{name}",countryName).retrieve().bodyToMono(String.class);
         return response.block();
     }
 
     public String getCountryInfoByNamefallback(Exception exception){
-        return new String();
+
+        return new String("The country service is not available please try again later");
     }
 }
