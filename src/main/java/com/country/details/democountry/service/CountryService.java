@@ -24,7 +24,7 @@ public class CountryService {
 
     @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
     public String getCountryInfoByName(String countryName){
-        return client.webClient().get().uri("/into/{name}",countryName).retrieve().bodyToMono(String.class).block();
+        return client.webClient().get().uri("/country/into/{name}",countryName).retrieve().bodyToMono(String.class).block();
     }
 
     public String getCountryInfoByNamefallback(Exception exception){
