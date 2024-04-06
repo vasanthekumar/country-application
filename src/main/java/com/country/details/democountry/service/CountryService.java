@@ -4,13 +4,18 @@ import com.country.details.democountry.modal.Country;
 import com.country.details.democountry.repository.CountryRepository;
 import com.country.details.democountry.util.Client;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Service
 public class CountryService {
+
+    private static final Logger LOGGER= LoggerFactory.getLogger(CountryService.class);
 
     @Autowired
     CountryRepository countryRepository;
@@ -24,7 +29,8 @@ public class CountryService {
 
     @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
     public String getCountryInfoByName(String countryName){
-        return client.webClient().get().uri("/country/into/{name}",countryName).retrieve().bodyToMono(String.class).block();
+        Mono<String> response = client.webClient().get().uri("/country/into/{name}",countryName).retrieve().bodyToMono(String.class);
+        return response.block();
     }
 
     public String getCountryInfoByNamefallback(Exception exception){

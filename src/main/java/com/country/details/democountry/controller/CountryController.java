@@ -1,12 +1,12 @@
 package com.country.details.democountry.controller;
 
-import com.country.details.democountry.modal.Country;
 import com.country.details.democountry.service.CountryService;
+import com.country.details.democountry.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * *
@@ -25,8 +25,8 @@ public class CountryController {
      * @return
      */
     @GetMapping(value = "/countries")
-    public List<Country> country() {
-        return countryService.getCountry();
+    public ResponseEntity<Object> country() {
+       return ResponseHandler.responseBuilder("Countries are given here", HttpStatus.OK,countryService.getCountry());
     }
 
 
@@ -36,8 +36,8 @@ public class CountryController {
      * @return
      */
     @GetMapping(value = "/countries/{name}")
-    public String country(@PathVariable String name) {
-        return countryService.getCountryInfoByName(name);
+    public ResponseEntity<Object> country(@PathVariable String name) {
+        return ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name));
     }
 
 }
