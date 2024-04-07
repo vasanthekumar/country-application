@@ -36,8 +36,9 @@ public class CountryController {
      * @return
      */
     @GetMapping(value = "/countries/{name}")
-    public ResponseEntity<Object> country(@PathVariable String name) {
-        return ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name));
+    public ResponseEntity<Object> country(@PathVariable String name,@RequestParam String fields) {
+        System.out.println("Fields :"+fields);
+        return ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name,fields));
     }
 
 }

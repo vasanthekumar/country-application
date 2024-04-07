@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class CountryService {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(CountryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CountryService.class);
 
     @Autowired
     CountryRepository countryRepository;
@@ -28,19 +28,25 @@ public class CountryService {
     @Autowired
     LoadBalancerClient loadBalancerClient;
 
-    public List<Country> getCountry(){
+    public List<Country> getCountry() {
         return countryRepository.findAll();
     }
 
-    @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
-    public String getCountryInfoByName(String countryName){
+//    @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
+    public String getCountryInfoByName(String countryName, String fields) {
         ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
-        String uri = serviceInstance.getUri().toString();
-        Mono<String> response = client.webClient().get().uri(uri+"/country/into/{name}",countryName).retrieve().bodyToMono(String.class);
-        return response.block();
+        String baseUrl = serviceInstance.getUri().toString();
+        String host = serviceInstance.getHost();
+        return client.webClient().get()
+                .uri(uriBuilder -> uriBuilder.path(baseUrl+"/country/into/{name}")
+                        .queryParam("fields", fields)
+                        .build(countryName))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 
-    public String getCountryInfoByNamefallback(Exception exception){
+    public String getCountryInfoByNamefallback(Exception exception) {
 
         return new String("The country service is not available please try again later");
     }
