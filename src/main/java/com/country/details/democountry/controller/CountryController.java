@@ -3,7 +3,6 @@ package com.country.details.democountry.controller;
 import com.country.details.democountry.service.CountryService;
 import com.country.details.democountry.util.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
  * Date: April 4,2024
  */
 @RestController
-@RefreshScope
 @RequestMapping(value = "/api")
 public class CountryController {
 

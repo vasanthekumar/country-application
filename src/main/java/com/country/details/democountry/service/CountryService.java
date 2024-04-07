@@ -64,7 +64,7 @@ public class CountryService {
         return webClient()
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/country/into/{name}")
+                        .path("/country/info/{name}")
                         .queryParam("fields", fields)
                         .build(countryName))
                 .retrieve()
