@@ -1,23 +1,23 @@
 package com.country.details.democountry.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import lombok.*;
 
 /**
  * *
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="country")
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     @JsonIgnore
-    private Long id;
+    private int id;
     @Column(name="name")
     private String name;
     @Column(name="country_code")
