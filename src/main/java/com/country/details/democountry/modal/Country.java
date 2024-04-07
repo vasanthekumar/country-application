@@ -6,7 +6,7 @@ import lombok.*;
 
 /**
  * A country with id, name and country code
- *
+ * 
  * This class allows for setting and getting the country name and county code.
  *
  * @author kvasanthakumar
@@ -15,18 +15,18 @@ import lombok.*;
  */
 @Entity
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
-@Table(name="country")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "country")
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     @JsonIgnore
     private int id;
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-    @Column(name="country_code")
+    @Column(name = "country_code")
     private String countryCode;
     @Transient
     private String capital;
@@ -35,62 +35,9 @@ public class Country {
     @Transient
     private String flagFileUrl;
 
-    public String getCapital() {
-        return capital;
-    }
-
-    public void setCapital(String capital) {
-        this.capital = capital;
-    }
-
-    public double getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(double population) {
-        this.population = population;
-    }
-
-    public String getFlagFileUrl() {
-        return flagFileUrl;
-    }
-
-    public void setFlagFileUrl(String flagFileUrl) {
-        this.flagFileUrl = flagFileUrl;
-    }
-
     public Country(int id, String name, String countryCode) {
         this.id = id;
         this.name = name;
         this.countryCode = countryCode;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public Country(){
-
-
     }
 }
