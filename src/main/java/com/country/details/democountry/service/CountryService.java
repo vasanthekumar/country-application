@@ -2,14 +2,15 @@ package com.country.details.democountry.service;
 
 import com.country.details.democountry.modal.Country;
 import com.country.details.democountry.repository.CountryRepository;
-import com.country.details.democountry.util.Client;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -23,27 +24,31 @@ public class CountryService {
     CountryRepository countryRepository;
 
     @Autowired
-    Client client;
-
-    @Autowired
     LoadBalancerClient loadBalancerClient;
+
+    @Bean
+    public WebClient webClient() {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
+        String baseUrl = serviceInstance.getUri().toString();
+        return WebClient.create(baseUrl);
+    }
 
     public List<Country> getCountry() {
         return countryRepository.findAll();
     }
 
-//    @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
+    @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
     public String getCountryInfoByName(String countryName, String fields) {
-        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
-        String baseUrl = serviceInstance.getUri().toString();
-        String host = serviceInstance.getHost();
-        return client.webClient().get()
-                .uri(uriBuilder -> uriBuilder.path(baseUrl+"/country/into/{name}")
+//        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
+//        String baseUrl = serviceInstance.getUri().toString();
+        return webClient()
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/country/into/{name}")
                         .queryParam("fields", fields)
                         .build(countryName))
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToMono(String.class).block();
     }
 
     public String getCountryInfoByNamefallback(Exception exception) {

@@ -9,20 +9,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * *
+ * Contains country infomation related Api calls .
+ * @author kvasanthakumar
+ * @version 0.0.1
+ * Date: April 4,2024
  */
 @RestController
 @RefreshScope
-@RequestMapping(value = "/country")
+@RequestMapping(value = "/api")
 public class CountryController {
 
+    /**
+     * Properties injection to autowire CountryService dependency.
+     */
     @Autowired
     CountryService countryService;
 
     /**
-     * *
-     *
-     * @return
+     * Description : Get all countries.
+     * Endpoint: GET /api/countries
+     * @return Response Entity
      */
     @GetMapping(value = "/countries")
     public ResponseEntity<Object> country() {
@@ -31,9 +37,11 @@ public class CountryController {
 
 
     /**
-     * *
-     * @param name
-     * @return
+     * Description : Get a country fields by Name.
+     * Endpoint: GET /api/countries/{name}
+     * @param name The name of the country
+     * @param fields The required fields of the country
+     * @return The Response entity with specified Name
      */
     @GetMapping(value = "/countries/{name}")
     public ResponseEntity<Object> country(@PathVariable String name,@RequestParam String fields) {
