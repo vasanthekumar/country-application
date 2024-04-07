@@ -28,6 +28,36 @@ public class Country {
     private String name;
     @Column(name="country_code")
     private String countryCode;
+    @Transient
+    private String capital;
+    @Transient
+    private double population;
+    @Transient
+    private String flagFileUrl;
+
+    public String getCapital() {
+        return capital;
+    }
+
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    public double getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(double population) {
+        this.population = population;
+    }
+
+    public String getFlagFileUrl() {
+        return flagFileUrl;
+    }
+
+    public void setFlagFileUrl(String flagFileUrl) {
+        this.flagFileUrl = flagFileUrl;
+    }
 
     public Country(int id, String name, String countryCode) {
         this.id = id;

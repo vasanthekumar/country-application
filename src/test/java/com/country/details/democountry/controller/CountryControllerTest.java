@@ -61,7 +61,7 @@ public class CountryControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists()) //Assert that "data" field exists
-                .andExpect(jsonPath("$.data").isArray()); //Assert that "data"fields is array
+                .andExpect(jsonPath("$.data").isArray()); //Assert that "data" fields is array
     }
 
 }

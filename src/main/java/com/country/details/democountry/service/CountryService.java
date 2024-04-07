@@ -2,6 +2,9 @@ package com.country.details.democountry.service;
 
 import com.country.details.democountry.modal.Country;
 import com.country.details.democountry.repository.CountryRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +15,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Service class for managing entities of the type Country.
- *
+ * 
  * This service provides business logic operation for managing entities of type Country.
  * It interacts with the CountryRepository to perform CRUD (Create,Read,Update,Delete) operations.
  *
@@ -58,10 +62,10 @@ public class CountryService {
     }
 
     @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
-    public String getCountryInfoByName(String countryName, String fields) {
+    public Country getCountryInfoByName(String countryName, String fields) throws JsonProcessingException {
 //        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
 //        String baseUrl = serviceInstance.getUri().toString();
-        return webClient()
+        String response = webClient()
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/country/info/{name}")
@@ -69,10 +73,24 @@ public class CountryService {
                         .build(countryName))
                 .retrieve()
                 .bodyToMono(String.class).block();
+        return getRequiredData(response);
     }
 
     public String getCountryInfoByNamefallback(Exception exception) {
-
         return new String("The country service is not available please try again later");
+    }
+
+    private Country getRequiredData(String result) throws JsonProcessingException {
+        ObjectMapper objectMapper=new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(result);
+        JsonNode data = objectMapper.readTree(jsonNode.get("data").asText()).get(0);
+        Country country = new Country();
+        country.setName(data.get("name").get("common").asText());
+        country.setFlagFileUrl(data.get("flags").get("svg").asText());
+        country.setCapital(data.get("capital").get(0).asText());
+        country.setCountryCode(data.get("cca2").asText());
+        country.setPopulation(data.get("population").asDouble());
+        return country;
+
     }
 }

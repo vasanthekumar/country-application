@@ -2,6 +2,7 @@ package com.country.details.democountry.controller;
 
 import com.country.details.democountry.service.CountryService;
 import com.country.details.democountry.util.ResponseHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +40,18 @@ public class CountryController {
      * Endpoint: GET /api/countries/{name}
      * @param name The name of the country
      * @param fields The required fields of the country
-     * @return The Response entity with specified Name
+     * @return The Response entity with specified Name,Population
      */
     @GetMapping(value = "/countries/{name}")
     public ResponseEntity<Object> country(@PathVariable String name,@RequestParam String fields) {
         System.out.println("Fields :"+fields);
-        return ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name,fields));
+        ResponseEntity<Object> response = null;
+        try {
+           response = ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name,fields));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 
 }
