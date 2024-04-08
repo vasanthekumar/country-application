@@ -6,7 +6,6 @@ import lombok.*;
 
 /**
  * A country with id, name and country code
- * 
  * This class allows for setting and getting the country name and county code.
  *
  * @author kvasanthakumar
@@ -28,16 +27,4 @@ public class Country {
     private String name;
     @Column(name = "country_code")
     private String countryCode;
-    @Transient
-    private String capital;
-    @Transient
-    private double population;
-    @Transient
-    private String flagFileUrl;
-
-    public Country(int id, String name, String countryCode) {
-        this.id = id;
-        this.name = name;
-        this.countryCode = countryCode;
-    }
 }

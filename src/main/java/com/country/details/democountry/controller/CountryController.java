@@ -43,11 +43,10 @@ public class CountryController {
      * @return The Response entity with specified Name,Population
      */
     @GetMapping(value = "/countries/{name}")
-    public ResponseEntity<Object> country(@PathVariable String name,@RequestParam String fields) {
-        System.out.println("Fields :"+fields);
+    public ResponseEntity<Object> country(@PathVariable String name) {
         ResponseEntity<Object> response = null;
         try {
-           response = ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name,fields));
+           response = ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

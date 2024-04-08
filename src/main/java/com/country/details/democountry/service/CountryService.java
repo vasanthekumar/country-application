@@ -1,5 +1,6 @@
 package com.country.details.democountry.service;
 
+import com.country.details.democountry.dto.CountryInfoDTO;
 import com.country.details.democountry.modal.Country;
 import com.country.details.democountry.repository.CountryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,13 +15,12 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Service class for managing entities of the type Country.
- * 
  * This service provides business logic operation for managing entities of type Country.
  * It interacts with the CountryRepository to perform CRUD (Create,Read,Update,Delete) operations.
  *
@@ -47,9 +47,7 @@ public class CountryService {
 
     @Bean
     public WebClient webClient() {
-        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
-        String baseUrl = serviceInstance.getUri().toString();
-        return WebClient.create(baseUrl);
+        return WebClient.create();
     }
 
     /**
@@ -62,35 +60,24 @@ public class CountryService {
     }
 
     @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNamefallback")
-    public Country getCountryInfoByName(String countryName, String fields) throws JsonProcessingException {
-//        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
-//        String baseUrl = serviceInstance.getUri().toString();
+    public CountryInfoDTO getCountryInfoByName(String countryName) throws JsonProcessingException {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
+        String baseUrl = serviceInstance.getUri().toString();
         String response = webClient()
                 .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/country/info/{name}")
-                        .queryParam("fields", fields)
-                        .build(countryName))
+                .uri(baseUrl + "/country/info/{name}",countryName)
                 .retrieve()
-                .bodyToMono(String.class).block();
+                .bodyToMono(String.class)
+                .block();
         return getRequiredData(response);
     }
 
-    public String getCountryInfoByNamefallback(Exception exception) {
-        return new String("The country service is not available please try again later");
+    public CountryInfoDTO getCountryInfoByNamefallback(Exception exception) {
+        return new CountryInfoDTO();
     }
 
-    private Country getRequiredData(String result) throws JsonProcessingException {
-        ObjectMapper objectMapper=new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(result);
-        JsonNode data = objectMapper.readTree(jsonNode.get("data").asText()).get(0);
-        Country country = new Country();
-        country.setName(data.get("name").get("common").asText());
-        country.setFlagFileUrl(data.get("flags").get("svg").asText());
-        country.setCapital(data.get("capital").get(0).asText());
-        country.setCountryCode(data.get("cca2").asText());
-        country.setPopulation(data.get("population").asDouble());
-        return country;
-
+    private CountryInfoDTO getRequiredData(String result) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(result, CountryInfoDTO.class);
     }
 }
