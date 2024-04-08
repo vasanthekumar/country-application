@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * Date: April 4,2024
  */
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/country")
 public class CountryController {
 
     /**
