@@ -9,6 +9,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +55,9 @@ public class CountryService {
      *
      * @return List of retrieved countries, or empty list if not.
      */
+    @Cacheable("allCountries")
     public List<Country> getCountry() {
+        System.out.println("Cache");
         return countryRepository.findAll();
     }
 
@@ -77,5 +81,10 @@ public class CountryService {
     private CountryInfoDTO getRequiredData(String result) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(result, CountryInfoDTO.class);
+    }
+
+    @CacheEvict(value = "allCountries",allEntries = true)
+    public void evictCache(){
+
     }
 }

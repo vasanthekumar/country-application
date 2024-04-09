@@ -26,7 +26,7 @@ public class CountryController {
 
     /**
      * Description : Get all countries.
-     * Endpoint: GET /api/countries
+     * Endpoint: GET /country/countries
      * @return Response Entity
      */
     @GetMapping(value = "/countries")
@@ -37,9 +37,9 @@ public class CountryController {
 
     /**
      * Description : Get a country fields by Name.
-     * Endpoint: GET /api/countries/{name}
+     * Endpoint: GET /country/countries/{name}
      * @param name The name of the country
-     * @return The Response entity with specified Name,Population
+     * @return The Response entity with specified Name,Population etc
      */
     @GetMapping(value = "/countries/{name}")
     public ResponseEntity<Object> country(@PathVariable String name) {
@@ -50,6 +50,12 @@ public class CountryController {
             e.printStackTrace();
         }
         return response;
+    }
+
+    @GetMapping("/evict")
+    public ResponseEntity<Object> evictCache(){
+        countryService.evictCache();
+        return ResponseEntity.ok("Cache eviction triggered successfully");
     }
 
 }

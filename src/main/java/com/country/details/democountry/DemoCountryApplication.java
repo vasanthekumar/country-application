@@ -2,11 +2,13 @@ package com.country.details.democountry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * @author kvasanthakumar
  */
 @SpringBootApplication
+@EnableCaching
 public class DemoCountryApplication {
 
 	/**
