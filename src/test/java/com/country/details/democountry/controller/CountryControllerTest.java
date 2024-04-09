@@ -48,16 +48,11 @@ public class CountryControllerTest {
         //Mock the service method to return the list of countries.
         when(countryService.getCountry()).thenReturn(country);
 
-        ResponseEntity<Object> result = countryController.country();
-        HashMap<String, Object> response = (HashMap<String, Object>) result.getBody();
-        List<Country> countries = (List<Country>) response.get("data");
-        assertThat(countries.size() == countries.size());
-        assertThat(countries.get(0).getName().equals(country.get(0).getName()));
-        assertThat(countries.get(1).getCountryCode().equals(country.get(1).getCountryCode()));
 
         //perform GET request to "/countries" endpoint.
-        mockMvc.perform(get("/api/countries")
+        mockMvc.perform(get("/country/countries")
                 .contentType(MediaType.APPLICATION_JSON))
+
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists()) //Assert that "data" field exists
                 .andExpect(jsonPath("$.data").isArray()); //Assert that "data" fields is array

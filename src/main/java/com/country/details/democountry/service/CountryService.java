@@ -73,7 +73,7 @@ public class CountryService {
     }
 
     public CountryInfoDTO getCountryInfoByNamefallback(Exception exception) {
-        return new CountryInfoDTO();
+        return null;
     }
 
     private CountryInfoDTO getRequiredData(String result) throws JsonProcessingException {

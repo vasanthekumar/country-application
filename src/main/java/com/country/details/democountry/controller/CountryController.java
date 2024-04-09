@@ -39,7 +39,6 @@ public class CountryController {
      * Description : Get a country fields by Name.
      * Endpoint: GET /api/countries/{name}
      * @param name The name of the country
-     * @param fields The required fields of the country
      * @return The Response entity with specified Name,Population
      */
     @GetMapping(value = "/countries/{name}")
