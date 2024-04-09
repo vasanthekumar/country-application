@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Contains country infomation related Api calls .
+ * Contains country information related Api calls .
  * @author kvasanthakumar
  * @version 0.0.1
  * Date: April 4,2024

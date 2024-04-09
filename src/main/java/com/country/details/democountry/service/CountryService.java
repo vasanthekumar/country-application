@@ -4,7 +4,6 @@ import com.country.details.democountry.dto.CountryInfoDTO;
 import com.country.details.democountry.modal.Country;
 import com.country.details.democountry.repository.CountryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -51,9 +49,9 @@ public class CountryService {
     }
 
     /**
-     * Retrives all countries.
+     * Retrieves all countries.
      *
-     * @return List of retrived countries, or empty list if not.
+     * @return List of retrieved countries, or empty list if not.
      */
     public List<Country> getCountry() {
         return countryRepository.findAll();

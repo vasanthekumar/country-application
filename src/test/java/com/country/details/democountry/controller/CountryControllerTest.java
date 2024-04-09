@@ -12,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +41,8 @@ public class CountryControllerTest {
     @Test
     public void testFindAllCountries() throws Exception {
         //Mock data
-        Country countryOne = new Country(1, "Finland", "F1");
-        Country countryTwo = new Country(2, "Sweden", "S1");
+        Country countryOne = getCountry(1, "Finland", "F1");
+        Country countryTwo = getCountry(2, "Sweden", "S1");
         List<Country> country = new ArrayList<>();
         country.add(countryOne);
         country.add(countryTwo);
@@ -56,6 +58,21 @@ public class CountryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists()) //Assert that "data" field exists
                 .andExpect(jsonPath("$.data").isArray()); //Assert that "data" fields is array
+    }
+
+    @Test
+    public void testCountryByName() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/country/countries/Finland")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
+    private Country getCountry(int id,String name,String countryCode){
+        Country country = new Country();
+        country.setId(id);
+        country.setName(name);
+        country.setCountryCode(countryCode);
+        return country;
     }
 
 }
