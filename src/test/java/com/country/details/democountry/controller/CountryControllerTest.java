@@ -1,7 +1,7 @@
 package com.country.details.democountry.controller;
 
 import com.country.details.democountry.modal.Country;
-import com.country.details.democountry.service.CountryService;
+import com.country.details.democountry.service.CountryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +31,7 @@ public class CountryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private CountryService countryService;
+    private CountryServiceImpl countryService;
 
     @InjectMocks
     private CountryController countryController;

@@ -1,12 +1,16 @@
 package com.country.details.democountry.controller;
 
-import com.country.details.democountry.service.CountryService;
-import com.country.details.democountry.util.ResponseHandler;
+import com.country.details.democountry.dto.CountryInfoDTO;
+import com.country.details.democountry.modal.Country;
+import com.country.details.democountry.service.CountryServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Contains country information related Api calls .
@@ -22,7 +26,7 @@ public class CountryController {
      * Properties injection to autowire CountryService dependency.
      */
     @Autowired
-    CountryService countryService;
+    CountryServiceImpl countryService;
 
     /**
      * Description : Get all countries.
@@ -30,8 +34,8 @@ public class CountryController {
      * @return Response Entity
      */
     @GetMapping(value = "/countries")
-    public ResponseEntity<Object> country() {
-       return ResponseHandler.responseBuilder("Countries are given here", HttpStatus.OK,countryService.getCountry());
+    public ResponseEntity<List<Country>> country() {
+        return ResponseEntity.ok(countryService.getCountries());
     }
 
 
@@ -42,14 +46,20 @@ public class CountryController {
      * @return The Response entity with specified Name,Population etc
      */
     @GetMapping(value = "/countries/{name}")
-    public ResponseEntity<Object> country(@PathVariable String name) {
-        ResponseEntity<Object> response = null;
+    public ResponseEntity<CountryInfoDTO> country(@PathVariable @NotNull String name) {
+        CountryInfoDTO countryInfoDTO = null;
         try {
-           response = ResponseHandler.responseBuilder("Requested country details are given here",HttpStatus.OK,countryService.getCountryInfoByName(name));
+            countryInfoDTO = countryService.getCountryInfoByName(name);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return response;
+        return ResponseEntity.ok(countryInfoDTO);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> errorEndpoint(RuntimeException ex){
+        String errorMessage = "Internal Server Error";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
 
     @GetMapping("/evict")

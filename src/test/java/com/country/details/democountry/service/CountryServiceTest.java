@@ -1,17 +1,12 @@
 package com.country.details.democountry.service;
 
 import com.country.details.democountry.dto.CountryInfoDTO;
-import com.country.details.democountry.repository.CountryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.MediaType;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -21,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class CountryServiceTest {
     @Autowired
-    CountryService countryService;
+    CountryServiceImpl countryService;
 
     static WireMockServer wireMockServer;
 
