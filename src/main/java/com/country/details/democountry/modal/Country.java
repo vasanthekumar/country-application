@@ -14,6 +14,8 @@ import lombok.*;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "country")
 public class Country {
     @Id

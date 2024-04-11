@@ -38,15 +38,9 @@ public class CountryControllerTest {
 
     @Test
     public void testFindAllCountries() throws Exception {
-        //Mock data
-        Country countryOne = getCountry(1, "Finland", "F1");
-        Country countryTwo = getCountry(2, "Sweden", "S1");
-        List<Country> country = new ArrayList<>();
-        country.add(countryOne);
-        country.add(countryTwo);
 
         //Mock the service method to return the list of countries.
-        when(countryService.getCountry()).thenReturn(country);
+        when(countryService.getCountries()).thenReturn(getCountries());
 
 
         //perform GET request to "/countries" endpoint.
@@ -58,19 +52,18 @@ public class CountryControllerTest {
                 .andExpect(jsonPath("$.data").isArray()); //Assert that "data" fields is array
     }
 
+    private List<Country> getCountries() {
+        Country countryOne = new Country(1, "Finland", "F1");
+        Country countryTwo = new Country(2, "Sweden", "S1");
+        List<Country> country = new ArrayList<>();
+        country.add(countryOne);
+        country.add(countryTwo);
+        return country;
+    }
+
     @Test
     public void testCountryByName() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/country/countries/Finland")
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk());
     }
-
-
-    private Country getCountry(int id,String name,String countryCode){
-        Country country = new Country();
-        country.setId(id);
-        country.setName(name);
-        country.setCountryCode(countryCode);
-        return country;
-    }
-
 }

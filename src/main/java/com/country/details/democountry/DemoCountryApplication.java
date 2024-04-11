@@ -3,6 +3,8 @@ package com.country.details.democountry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * @author kvasanthakumar
@@ -19,4 +21,12 @@ public class DemoCountryApplication {
 		SpringApplication.run(DemoCountryApplication.class, args);
 	}
 
+	/**
+	 * Description: Get webclient
+	 * @return Webclient
+	 */
+	@Bean
+	public WebClient webClient() {
+		return WebClient.create();
+	}
 }

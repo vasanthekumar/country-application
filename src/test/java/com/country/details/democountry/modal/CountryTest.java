@@ -12,7 +12,7 @@ public class CountryTest {
 
     @Test
     public void setCountryName(){
-        country =new Country();
+        country = new Country();
         country.setName("France");
         assertEquals("France",country.getName());
     }
