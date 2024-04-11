@@ -20,8 +20,9 @@ import java.util.List;
  * Date: April 4,2024
  */
 @RestController
-@RequestMapping(value = "/country")
 @Slf4j
+@RequestMapping(value = "/country")
+@CrossOrigin
 public class CountryController {
 
     /**
@@ -35,6 +36,7 @@ public class CountryController {
      * Endpoint: GET /country/countries
      * @return Response Entity
      */
+
     @GetMapping(value = "/countries")
     public ResponseEntity<List<Country>> country() {
         log.info("Calling country method with Get endpoint...");

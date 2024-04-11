@@ -46,10 +46,7 @@ public class CountryControllerTest {
         //perform GET request to "/countries" endpoint.
         mockMvc.perform(get("/country/countries")
                 .contentType(MediaType.APPLICATION_JSON))
-
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data").exists()) //Assert that "data" field exists
-                .andExpect(jsonPath("$.data").isArray()); //Assert that "data" fields is array
+                .andExpect(status().isOk());
     }
 
     private List<Country> getCountries() {

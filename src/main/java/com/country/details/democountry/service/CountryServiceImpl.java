@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.client.ServiceInstance;
@@ -30,6 +31,9 @@ import static com.country.details.democountry.util.Constant.COUNTRY_INFO_NAME;
 @Service
 @Slf4j
 public class CountryServiceImpl implements CountryService{
+
+    @Value("${country.info.app.name}")
+    private String applicationName;
 
     /**
      * Properties injection to autowire CountryRepository dependency.
@@ -66,7 +70,7 @@ public class CountryServiceImpl implements CountryService{
     @CircuitBreaker(name = "country", fallbackMethod = "getCountryInfoByNameFallback")
     public CountryInfoDTO getCountryInfoByName(String countryName) throws JsonProcessingException {
         log.info("Calling get country by name service level...");
-        ServiceInstance serviceInstance = loadBalancerClient.choose("country-info");
+        ServiceInstance serviceInstance = loadBalancerClient.choose(applicationName);
         String baseUrl = serviceInstance.getUri().toString();
         String response = this.webClient
                 .get()
