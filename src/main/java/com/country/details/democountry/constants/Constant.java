@@ -1,4 +1,4 @@
-package com.country.details.democountry.Constants;
+package com.country.details.democountry.constants;
 
 /**
  * Class to define all the Constant.
@@ -8,5 +8,5 @@ package com.country.details.democountry.Constants;
  */
 public class Constant {
     //Constant to hold external URL for country info.
-    public static final String COUNTRY_INFO_NAME = "v1/country/info/{name}";
+    public static final String COUNTRY_INFO_NAME = "/v1/country/info/{name}";
 }

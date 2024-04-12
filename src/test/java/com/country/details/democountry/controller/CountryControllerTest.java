@@ -44,7 +44,7 @@ public class CountryControllerTest {
 
 
         //perform GET request to "/countries" endpoint.
-        mockMvc.perform(get("/country/countries")
+        mockMvc.perform(get("/v1/country/countries")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -60,7 +60,7 @@ public class CountryControllerTest {
 
     @Test
     public void testCountryByName() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/country/countries/Finland")
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/country/countries/Finland")
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

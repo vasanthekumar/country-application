@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
-import static com.country.details.democountry.Constants.Constant.COUNTRY_INFO_NAME;
+import static com.country.details.democountry.constants.Constant.COUNTRY_INFO_NAME;
 
 /**
  * Business logic implementation for service class.

@@ -27,7 +27,7 @@ public class CountryServiceTest {
         wireMockServer.start();
         configureFor("localhost", 8080);
 
-        wireMockServer.stubFor(get(urlEqualTo("/country/info/Finland"))
+        wireMockServer.stubFor(get(urlEqualTo("/v1/country/info/Finland"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                         .withBody("[{\"name\":{\"common\":\"Finland\"},\"flags\":{\"svg\":\"https://flagcdn.com/fi.svg\"},\"capital\":[\"Helsinki\"],\"cca2\":\"FI\",\"population\":5530719}]"))
