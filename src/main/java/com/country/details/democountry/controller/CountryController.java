@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping(value = "/country")
+@RequestMapping(value = "/v1/country")
 @CrossOrigin
 public class CountryController {
 
@@ -38,7 +38,7 @@ public class CountryController {
      */
 
     @GetMapping(value = "/countries")
-    public ResponseEntity<List<Country>> country() {
+    public ResponseEntity<List<Country>> getAllCountries() {
         log.info("Calling country method with Get endpoint...");
         return ResponseEntity.ok(countryService.getCountries());
     }
@@ -51,7 +51,7 @@ public class CountryController {
      * @return The Response entity with specified Name,Population etc
      */
     @GetMapping(value = "/countries/{name}")
-    public ResponseEntity<CountryInfoDTO> country(@PathVariable @NotNull String name) {
+    public ResponseEntity<CountryInfoDTO> getCountryInfoByName(@PathVariable @NotNull String name) {
         log.info("Calling country method with the county name : {}", name);
         CountryInfoDTO countryInfoDTO = null;
         try {

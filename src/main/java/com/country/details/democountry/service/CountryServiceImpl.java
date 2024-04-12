@@ -13,13 +13,12 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
-import static com.country.details.democountry.util.Constant.COUNTRY_INFO_NAME;
+import static com.country.details.democountry.Constants.Constant.COUNTRY_INFO_NAME;
 
 /**
  * Business logic implementation for service class.
